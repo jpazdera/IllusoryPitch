@@ -2,7 +2,7 @@ library(sjstats)  # For anova_stats() function
 
 # Set contrasts and working directory
 options(contrasts=c("contr.sum","contr.poly"))
-setwd("~/git/BidirectionalInteractions/E2/data")
+setwd("~/git/IllusoryPitch/E1/data")
 
 # Load processed scores
 data <- read.csv("scores.csv", fileEncoding="UTF-8-BOM")
