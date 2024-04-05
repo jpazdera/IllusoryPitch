@@ -1,21 +1,25 @@
-setwd("/Users/oliverinaldi/Documents/GitHub/IllusoryPitch/E2/data")
-options(contrasts=c("contr.sum", "contr.poly"))
-dat <- read.csv("scores.csv")
 library(dplyr)
 library(tidyverse)
 library(lme4)  # For linear mixed effects modeling
 library(lmerTest)  # For F testing of LMER models
 library(car)
+
+setwd("/Users/oliverinaldi/Documents/GitHub/IllusoryPitch/E2/data")
+#setwd("/Users/jpazd/Documents/git/IllusoryPitch/E2/data")
+options(contrasts=c("contr.sum", "contr.poly"))
+
+dat <- read.csv("scores.csv")
+
 dat2 <- dat %>% filter(!row_number() %in% c(55, 56, 57, 58, 59, 60))
 dat2$subject <- as.factor(dat2$subject)
 dat2$difficulty <- as.factor(dat2$difficulty)
 modelC <- lmer(C ~ 1 + poly(interval, 1) * difficulty + (1 | subject),
-              data=dat, REML=FALSE)
+              data=dat2, REML=FALSE)
 anova(modelC)
 
-poly(grp.means <- with(dat,
+poly(grp.means <- with(dat2,
                    tapply(C, list(interval, difficulty), mean)))
-with(dat,
+with(dat2,
      interaction.plot(x.factor=interval,
                       trace.factor=difficulty,
                       response=C))
@@ -26,13 +30,14 @@ with(dat,
 # difficulty                   1.14513 1.14513     1 166.15 13.6261 0.0003021 ***
 # poly(interval, 1):difficulty 0.00065 0.00065     1 150.09  0.0077 0.9301180    
 
-modeldprime <- lmer(dprime ~ 1 + poly(interval, 1) * difficulty + (1 | subject),
-              data=dat, REML=FALSE)
+dat2$interval <- as.factor(dat2$interval)
+modeldprime <- lmer(dprime ~ 1 + interval * difficulty + (1 | subject),
+              data=dat2, REML=FALSE)
 anova(modeldprime)
 
-poly(grp.means <- with(dat,
+poly(grp.means <- with(dat2,
                        tapply(dprime, list(interval, difficulty), mean)))
-with(dat,
+with(dat2,
      interaction.plot(x.factor=interval,
                       trace.factor=difficulty,
                       response=dprime))
