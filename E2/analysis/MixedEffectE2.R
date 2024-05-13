@@ -25,10 +25,10 @@ with(dat2,
                       response=C))
 #C
 # Type III Analysis of Variance Table with Satterthwaite's method
-#                               Sum Sq Mean Sq NumDF  DenDF F value    Pr(>F)    
-# poly(interval, 1)            0.11331 0.11331     1 150.09  1.3483 0.2474178    
-# difficulty                   1.14513 1.14513     1 166.15 13.6261 0.0003021 ***
-# poly(interval, 1):difficulty 0.00065 0.00065     1 150.09  0.0077 0.9301180    
+#                              Sum Sq Mean Sq NumDF  DenDF F value    Pr(>F)    
+# poly(interval, 1)            1.0393  1.0393     1 145.02 12.3793 0.0005801 ***
+# difficulty                   1.2791  1.2791     1 160.84 15.2345 0.0001394 ***
+# poly(interval, 1):difficulty 0.0015  0.0015     1 145.02  0.0179 0.8937508 
 
 dat2$interval <- as.factor(dat2$interval)
 modeldprime <- lmer(dprime ~ 1 + interval * difficulty + (1 | subject),
@@ -41,11 +41,11 @@ with(dat2,
      interaction.plot(x.factor=interval,
                       trace.factor=difficulty,
                       response=dprime))
-
+# Dprime
 # Type III Analysis of Variance Table with Satterthwaite's method
-#                               Sum Sq Mean Sq NumDF  DenDF  F value Pr(>F)    
-# poly(interval, 1)             0.1463  0.1463     1 150.64   0.5326 0.4666    
-# difficulty                   30.4797 30.4797     1 156.99 110.9603 <2e-16 ***
-# poly(interval, 1):difficulty  0.0214  0.0214     1 150.64   0.0779 0.7806    
+#                      Sum Sq Mean Sq NumDF  DenDF F value Pr(>F)    
+# interval             0.7751  0.3875     2 145.37  1.4204 0.2449    
+# difficulty          27.2652 27.2652     1 152.50 99.9328 <2e-16 ***
+# interval:difficulty  0.2794  0.1397     2 145.37  0.5120 0.6004    
 # ---
 # Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
