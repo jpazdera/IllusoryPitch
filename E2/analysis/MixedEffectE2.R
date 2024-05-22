@@ -4,18 +4,42 @@ library(lme4)  # For linear mixed effects modeling
 library(lmerTest)  # For F testing of LMER models
 library(car)
 
-setwd("/Users/oliverinaldi/Documents/GitHub/IllusoryPitch/E2/data")
-#setwd("/Users/jpazd/Documents/git/IllusoryPitch/E2/data")
+#setwd("/Users/oliverinaldi/Documents/GitHub/IllusoryPitch/E2/data")
+setwd("/Users/jpazd/Documents/git/IllusoryPitch/E2/data")
 options(contrasts=c("contr.sum", "contr.poly"))
 
-dat <- read.csv("scores.csv")
+###
+# Figure 4 Analysis
+###
 
-dat2 <- dat %>% filter(!row_number() %in% c(55, 56, 57, 58, 59, 60))
+data <- read.csv("fits.csv")
+data <- data %>% filter(!subject %in% c(21) & version >= 1.1 & shift_size == 1)
+cor.test(data$jnd, data$C_slope)
+
+###
+# Figure 5 & 6 Analysis
+###
+
+dat <- read.csv("scores.csv")
+dat2 <- dat %>% filter(!subject %in% c(21) & version >= 1.1)
 dat2$subject <- as.factor(dat2$subject)
-dat2$difficulty <- as.factor(dat2$difficulty)
-modelC <- lmer(C ~ 1 + poly(interval, 1) * difficulty + (1 | subject),
+dat2$shift_size <- as.factor(dat2$shift_size)
+dat2$offset <- as.factor(dat2$offset)
+
+model <- aov(dprime ~ 1 + offset * shift_size + Error(subject / (offset * shift_size)), data=dat2)
+anova_stats(model)
+
+data <- read.csv("fits.csv")
+data <- data %>% filter(!subject %in% c(21) & version >= 1.1)
+t.test(data[data$shift_size==1, 'C_slope'], data[data$shift_size==0.5, 'C_slope'])
+
+modelC <- lmer(C ~ 1 + poly(interval, 1) * difficulty + (1 + poly(interval, 1) | subject),
               data=dat2, REML=FALSE)
-anova(modelC)
+
+library(sjPlot)
+
+# Plot the random slopes
+plot_model(modelC, type = "re")
 
 poly(grp.means <- with(dat2,
                    tapply(C, list(interval, difficulty), mean)))
