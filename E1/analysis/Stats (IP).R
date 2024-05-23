@@ -31,7 +31,7 @@ model <- aov(dprime ~ 1 + offset * octave + Error(subject / (offset * octave)), 
 anova_stats(model)
 
 # Pairwise t-tests for main effect of timing offset on C
-pairwise.t.test(data$C, data$offset, p.adj="bonferroni", paired=T, alternative="two.sided")
+pairwise.t.test(data$C, data$offset, p.adj="holm", paired=T, alternative="two.sided")
 # Early perceived as higher pitched than on time and late; on time perceived as higher pitched than late
 
 ###
