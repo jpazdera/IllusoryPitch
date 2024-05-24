@@ -160,3 +160,4 @@ cython_debug/
 #.idea/
 *.xml
 *.iml
+E2/data/survey_data.csv
