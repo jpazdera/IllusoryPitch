@@ -102,16 +102,16 @@ anova(model)
 
 # Now for some fun programmer magic --- if you label the conditions with the following numerical values:
 # Early = 1, Late = 0; Up = 1, Down = 0; Incorrect = 1, Correct = 0
-# When summed, any even outcome is a bias-affirming response and any odd outcome is a bias-opposing response
-# For example, an early/down/incorrect response sums to 2, and is bias-affirming because they rated an early tone as high
-# The 3-factor combinations that are categorized as bias affirming, bias opposing, and neutral are as follows:
-# BA = EUC, LDC, EDI, LUI = 1+1+0, 0+0+0, 1+0+1, 0+1+1
+# When summed, any even outcome is a bias-conforming response and any odd outcome is a bias-opposing response
+# For example, an early/down/incorrect response sums to 2, and is bias-conforming because they rated an early tone as high
+# The 3-factor combinations that are categorized as bias conforming, bias opposing, and neutral are as follows:
+# BC = EUC, LDC, EDI, LUI = 1+1+0, 0+0+0, 1+0+1, 0+1+1
 # BO = EDC, LUC, EUI, LDI = 1+0+0, 0+1+0, 1+1+1, 0+0+1
-# N = OUC, ODC, OUI, ODI
+# BN = OUC, ODC, OUI, ODI
 data$response_type <- NA
-bias_affirming_mask <- ((data$offset == -15) + (data$pitch_shift=='+')) + (data$correct == 'False') %% 2 == 0
-data[bias_affirming_mask, 'response_type'] <- 'affirming'
-data[!bias_affirming_mask, 'response_type'] <- 'opposing'
+bias_conforming_mask <- ((data$offset == -15) + (data$pitch_shift=='+')) + (data$correct == 'False') %% 2 == 0
+data[bias_conforming_mask, 'response_type'] <- 'conforming'
+data[!bias_conforming_mask, 'response_type'] <- 'opposing'
 # All trials with an offset of 0 get their labels overwritten as bias neutral (the above process would have mislabeled them, but we correct that now)
 neutral_mask <- data$offset == 0
 data[neutral_mask, 'response_type'] <- 'neutral'
@@ -128,14 +128,33 @@ anova_stats(model)
 #         |               |         |                 |           |          | subject:response_type |     Residuals | 1.201e+06 | 54 | 22237.606 |           |         |
 
 # Pairwise t-tests for reaction time differences by response type
-pairwise.t.test(subj_means$rt, subj_means$response_type, p.adj="holm", paired=T, alternative="two.sided")
-#          affirming neutral
-# neutral  1.6e-05   -
-# opposing 1.6e-05   0.25
-group_by(subj_means, response_type) %>%
-  summarize(m=mean(rt), sd=sd(rt))
+t.test(subj_means[subj_means$response_type=='conforming', 'rt'] - subj_means[subj_means$response_type=='neutral', 'rt'], mu=0)
+# t = -5.6595, df = 27, p-value = 5.212e-06 (p_adj < .001)
+# alternative hypothesis: true mean is not equal to 0
+# 95 percent confidence interval:
+# -362.7594 -169.7140
+# sample estimates:
+# mean of x
+# -266.2367
+t.test(subj_means[subj_means$response_type=='conforming', 'rt'] - subj_means[subj_means$response_type=='opposing', 'rt'], mu=0)
+# t = -5.5279, df = 27, p-value = 7.402e-06 (p_adj < .001)
+# alternative hypothesis: true mean is not equal to 0
+# 95 percent confidence interval:
+# -319.9965 -146.7499
+# sample estimates:
+# mean of x
+# -233.3732
+t.test(subj_means[subj_means$response_type=='neutral', 'rt'] - subj_means[subj_means$response_type=='opposing', 'rt'], mu=0)
+# t = 1.1844, df = 27, p-value = 0.2466 (p_adj = .247)
+# alternative hypothesis: true mean is not equal to 0
+# 95 percent confidence interval:
+# -24.06890  89.79604
+# sample estimates:
+# mean of x
+# 32.86357
+
+subj_means %>% group_by(response_type) %>% summarize(m=mean(rt), sd=sd(rt))
 # response_type     m    sd
-# <fct>         <dbl> <dbl>
-# 1 affirming      871.  281.
+# 1 conforming      871.  281.
 # 2 neutral       1137.  400.
 # 3 opposing      1104.  436.
