@@ -9,7 +9,7 @@ setwd("~/git/IllusoryPitch/E2/data")
 options(contrasts=c("contr.sum", "contr.poly"))
 
 ###
-# Figure 4 & 5 Analysis
+# Figure 4 - 6 Analysis
 ###
 
 dat <- read.csv("scores.csv")
@@ -49,7 +49,7 @@ pairwise.t.test(dat2$C, dat2$offset, p.adj="holm", paired=T, alternative="two.si
 # 15 0.0194 0.0053
 # P value adjustment method: holm
 
-# Analysis of the offset x shift size interaction
+# Analysis of the offset x shift size interaction: Contrasting timing-induced bias
 fits <- read.csv("fits.csv")
 fits <- fits %>% filter(!subject %in% c(21) & version >= 1.1)
 t.test(fits[fits$shift_size==1, 'C_slope'], fits[fits$shift_size==0.5, 'C_slope'], paired=TRUE)
@@ -61,8 +61,49 @@ t.test(fits[fits$shift_size==1, 'C_slope'], fits[fits$shift_size==0.5, 'C_slope'
 # mean difference
 # 0.0005720765
 
+# Analysis of the offset x shift size interaction: Contrasting the main effect of shift size between probe offsets
+e_diff <- dat2[(dat2$shift_size==1) & (dat2$offset==-15), 'C'] - dat2[(dat2$shift_size==0.5) & (dat2$offset==-15), 'C']
+o_diff <- dat2[(dat2$shift_size==1) & (dat2$offset==0), 'C'] - dat2[(dat2$shift_size==0.5) & (dat2$offset==0), 'C']
+l_diff <- dat2[(dat2$shift_size==1) & (dat2$offset==15), 'C'] - dat2[(dat2$shift_size==0.5) & (dat2$offset==15), 'C']
+t.test(e_diff, o_diff, paired=TRUE)
+# t = -2.2799, df = 26, p-value = 0.03106
+# alternative hypothesis: true mean difference is not equal to 0
+# 95 percent confidence interval:
+# -0.43266619 -0.02239288
+# sample estimates:
+# mean difference
+# -0.2275295
+t.test(e_diff, l_diff, paired=TRUE)
+# t = -0.17829, df = 26, p-value = 0.8599
+# alternative hypothesis: true mean difference is not equal to 0
+# 95 percent confidence interval:
+# -0.2150269  0.1807023
+# sample estimates:
+# mean difference
+# -0.01716229
+t.test(o_diff, l_diff, paired=TRUE)
+# t = 2.5697, df = 26, p-value = 0.01626
+# alternative hypothesis: true mean difference is not equal to 0
+# 95 percent confidence interval:
+# 0.04209244 0.37864204
+# sample estimates:
+# mean difference
+# 0.2103672
+
+# Analysis of change in d' correlating with change in timing-induced bias
+d_diff <- fits[fits$shift_size==0.5, 'dprime'] - fits[fits$shift_size==1, 'dprime']
+cs_diff <- fits[fits$shift_size==0.5, 'C_slope'] - fits[fits$shift_size==1, 'C_slope']
+cor.test(d_diff, cs_diff)
+# t = 0.82233, df = 25, p-value = 0.4187
+# alternative hypothesis: true correlation is not equal to 0
+# 95 percent confidence interval:
+# -0.2320373  0.5107990
+# sample estimates:
+# cor
+# 0.1622866
+
 ###
-# Figure 6 Analysis
+# Figure 7 Analysis
 ###
 
 data <- read.csv("fits.csv")
