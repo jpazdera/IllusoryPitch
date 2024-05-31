@@ -116,3 +116,13 @@ cor.test(data$jnd, data$C_slope)
 # sample estimates:
 # cor
 # 0.02795063
+data <- read.csv("fits.csv")
+data <- data %>% filter(!subject %in% c(21) & shift_size == 1)
+cor.test(data$jnd, data$C_slope)
+# t = -0.49888, df = 38, p-value = 0.6207
+# alternative hypothesis: true correlation is not equal to 0
+# 95 percent confidence interval:
+# -0.3825610  0.2367949
+# sample estimates:
+# cor
+# -0.08066456
