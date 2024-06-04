@@ -76,7 +76,7 @@ cor.test(data$dprime, data$C_slope)
 ###
 
 data <- read.csv("response_data.csv", fileEncoding="UTF-8-BOM")
-data <- data %>% filter(!subject %in% c(15, 22) & rt < 10000)
+data <- data %>% filter(!subject %in% c(15, 22) & rt < 5000)
 data$subject <- factor(data$subject, ordered=F)
 data$offset <- factor(data$offset, ordered=F)
 data$pitch_shift <- factor(data$pitch_shift, ordered=F)
@@ -85,14 +85,14 @@ data$correct <- factor(data$correct, ordered=F)
 model <- lmer(rt ~ 1 + offset * pitch_shift * correct + (1 + correct | subject), data=data, REML=FALSE)
 anova(model)
 # Type III Analysis of Variance Table with Satterthwaite's method
-#                              Sum Sq  Mean Sq NumDF  DenDF F value    Pr(>F)
-# offset                      9363030  4681515     2 6639.3  4.5539 0.0105590 *
-# pitch_shift                 3609689  3609689     1 6653.0  3.5113 0.0609958 .
-# correct                    19368789 19368789     1   25.6 18.8408 0.0001972 ***
-# offset:pitch_shift          1197167   598584     2 6648.9  0.5823 0.5586595
-# offset:correct              2645128  1322564     2 6637.5  1.2865 0.2763018
-# pitch_shift:correct           11028    11028     1 6646.2  0.0107 0.9175107
-# offset:pitch_shift:correct 16504173  8252087     2 6641.6  8.0271 0.0003297 ***
+#                              Sum Sq Mean Sq NumDF  DenDF F value    Pr(>F)
+# offset                      7972994 3986497     2 6502.4  8.2272 0.0002701 ***
+# pitch_shift                 1036720 1036720     1 6515.4  2.1396 0.1435915
+# correct                     8823866 8823866     1   25.9 18.2105 0.0002330 ***
+# offset:pitch_shift           316684  158342     2 6511.7  0.3268 0.7212524
+# offset:correct              4143980 2071990     2 6501.4  4.2761 0.0139356 *
+# pitch_shift:correct          564768  564768     1 6510.8  1.1656 0.2803567
+# offset:pitch_shift:correct 10798310 5399155     2 6507.0 11.1426 1.476e-05 ***
 # ---
 # Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
@@ -123,38 +123,38 @@ model <- aov(rt ~ 1 + response_type + Error(subject / response_type), data=subj_
 anova_stats(model)
 # etasq | partial.etasq | omegasq | partial.omegasq | epsilonsq | cohens.f |                 group |          term |     sumsq | df |    meansq | statistic | p.value | power
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#   0.813 |         0.896 |   0.765 |           0.840 |     0.766 |    2.941 |               subject |     Residuals | 1.038e+07 | 27 | 3.846e+05 |           |         |     1
-#   0.092 |         0.496 |   0.089 |           0.378 |     0.089 |    0.991 | subject:response_type | response_type | 1.180e+06 |  2 | 5.900e+05 |    26.531 |  < .001 |     1
-#         |               |         |                 |           |          | subject:response_type |     Residuals | 1.201e+06 | 54 | 22237.606 |           |         |
+#   0.825 |         0.906 |   0.781 |           0.855 |     0.783 |    3.105 |               subject |     Residuals | 5.216e+06 | 27 | 1.932e+05 |           |         |     1
+#   0.089 |         0.510 |   0.086 |           0.392 |     0.086 |    1.020 | subject:response_type | response_type | 5.632e+05 |  2 | 2.816e+05 |    28.116 |  < .001 |     1
+#         |               |         |                 |           |          | subject:response_type |     Residuals | 5.409e+05 | 54 | 10015.853 |           |         |
 
 # Pairwise t-tests for reaction time differences by response type
 t.test(subj_means[subj_means$response_type=='conforming', 'rt'] - subj_means[subj_means$response_type=='neutral', 'rt'], mu=0)
-# t = -5.6595, df = 27, p-value = 5.212e-06 (p_adj < .001)
+# t = -5.9306, df = 27, p-value = 2.541e-06 (p_adj<.001)
 # alternative hypothesis: true mean is not equal to 0
 # 95 percent confidence interval:
-# -362.7594 -169.7140
+# -253.7131 -123.2823
 # sample estimates:
 # mean of x
-# -266.2367
+# -188.4977
 t.test(subj_means[subj_means$response_type=='conforming', 'rt'] - subj_means[subj_means$response_type=='opposing', 'rt'], mu=0)
-# t = -5.5279, df = 27, p-value = 7.402e-06 (p_adj < .001)
+# t = -5.6893, df = 27, p-value = 4.816e-06 (p_adj<.001)
 # alternative hypothesis: true mean is not equal to 0
 # 95 percent confidence interval:
-# -319.9965 -146.7499
+# -209.00127  -98.20726
 # sample estimates:
 # mean of x
-# -233.3732
+# -153.6043
 t.test(subj_means[subj_means$response_type=='neutral', 'rt'] - subj_means[subj_means$response_type=='opposing', 'rt'], mu=0)
-# t = 1.1844, df = 27, p-value = 0.2466 (p_adj = .247)
+# t = 1.7294, df = 27, p-value = 0.09516 (p_adj=.095)
 # alternative hypothesis: true mean is not equal to 0
 # 95 percent confidence interval:
-# -24.06890  89.79604
+# -6.505535 76.292373
 # sample estimates:
 # mean of x
-# 32.86357
+# 34.89342
 
 subj_means %>% group_by(response_type) %>% summarize(m=mean(rt), sd=sd(rt))
 # response_type     m    sd
-# 1 conforming      871.  281.
-# 2 neutral       1137.  400.
-# 3 opposing      1104.  436.
+# 1 conforming     825.  247.
+# 2 neutral       1013.  272.
+# 3 opposing       978.  279.
