@@ -56,6 +56,32 @@ pairwise.t.test(data$C, data$offset, p.adj="holm", paired=T, alternative="two.si
 # P value adjustment method: holm
 
 ###
+# Analysis of Percent "Higher"
+###
+
+data <- read.csv("response_data.csv", fileEncoding="UTF-8-BOM")
+data <- data %>% filter(!subject %in% c(15, 22))
+data$subject <- factor(data$subject, ordered=F)
+data$offset <- factor(data$offset, ordered=F)
+data$pitch_shift <- factor(data$pitch_shift, ordered=F)
+data$response <- as.logical(data$response, ordered=F)
+
+subj_means <- group_by(data, subject, offset, pitch_shift) %>%
+  summarize(response=mean(response))
+
+model <- aov(response ~ 1 + offset * pitch_shift + Error(subject / (offset * pitch_shift)), data=subj_means)
+anova_stats(model)
+# etasq | partial.etasq | omegasq | partial.omegasq | epsilonsq | cohens.f |                      group |               term |  sumsq | df | meansq | statistic | p.value | power
+# -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#   0.041 |         0.837 |   0.037 |           0.598 |     0.037 |    2.266 |                    subject |          Residuals |  0.773 | 27 |  0.029 |           |         | 1.000
+#   0.037 |         0.822 |   0.037 |           0.595 |     0.037 |    2.146 |             subject:offset |             offset |  0.693 |  2 |  0.347 |    11.231 |  < .001 | 1.000
+#   0.089 |         0.917 |   0.081 |           0.764 |     0.081 |    3.327 |             subject:offset |          Residuals |  1.667 | 54 |  0.031 |           |         | 1.000
+#   0.620 |         0.987 |   0.620 |           0.961 |     0.620 |    8.763 |        subject:pitch_shift |        pitch_shift | 11.563 |  1 | 11.563 |    82.139 |  < .001 | 1.000
+#   0.204 |         0.962 |   0.200 |           0.888 |     0.200 |    5.024 |        subject:pitch_shift |          Residuals |  3.801 | 27 |  0.141 |           |         | 1.000
+#   0.000 |         0.000 |   0.000 |          -0.012 |     0.000 |    0.019 | subject:offset:pitch_shift | offset:pitch_shift |  0.000 |  2 |  0.000 |     0.009 |   0.991 | 0.051
+#         |               |         |                 |           |          | subject:offset:pitch_shift |          Residuals |  0.151 | 54 |  0.003 |           |         |
+
+###
 # Figure 2 Analysis
 ###
 
