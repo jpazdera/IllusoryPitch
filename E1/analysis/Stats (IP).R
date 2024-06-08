@@ -88,8 +88,17 @@ anova_stats(model)
 ###
 
 data <- read.csv("subj_scores.csv", fileEncoding="UTF-8-BOM")
+# With poor performers included
+cor.test(data$dprime, data$C_slope)
+# t = -2.1693, df = 28, p-value = 0.0387
+# alternative hypothesis: true correlation is not equal to 0
+# 95 percent confidence interval:
+# -0.65067489 -0.02207416
+# sample estimates:
+# cor
+# -0.3793267
 data <- data %>% filter(!subject %in% EXCLUDED)
-
+# With poor performers excluded
 cor.test(data$dprime, data$C_slope)
 # t = -1.6778, df = 23, p-value = 0.1069
 # alternative hypothesis: true correlation is not equal to 0
