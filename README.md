@@ -2,7 +2,7 @@
 
 Data and code for: 
 
-Pazdera, Rinaldi, &amp; Trainor (2024). Timing-induced illusory percepts of pitch. _PsyArXiv_. https://osf.io/preprints/psyarxiv/[LINK NEEDED]
+Pazdera, Rinaldi, &amp; Trainor (2024). Timing-induced illusory percepts of pitch. _PsyArXiv_. https://osf.io/preprints/psyarxiv/[LINK_NEEDED]
 
 Full documentation coming at publication!
 
