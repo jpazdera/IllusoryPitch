@@ -161,3 +161,4 @@ cython_debug/
 *.xml
 *.iml
 E2/data/survey_data.csv
+*.DS_Store
