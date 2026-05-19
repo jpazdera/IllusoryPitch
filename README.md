@@ -2,7 +2,7 @@
 
 This repository contains the stimuli, experimental code, raw data, and analysis files for the manuscript:
 
-Pazdera, J. K., Rinaldi, O. M., & Trainor, L. J. _Timing-induced illusory percepts of pitch_.
+Pazdera, J. K., Rinaldi, O. M., & Trainor, L. J. (2024). Timing-induced illusory percepts of pitch. _PsyArXiv_.
 
 The project was originally shared as a preprint on PsyArXiv/OSF:
 <https://osf.io/preprints/psyarxiv/caxsb>
