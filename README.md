@@ -2,48 +2,31 @@
 
 This repository contains the stimuli, experimental code, raw data, and analysis files for the manuscript:
 
-Pazdera, J. K., Rinaldi, O. M., & Trainor, L. J. (2024). Timing-induced illusory percepts of pitch. _PsyArXiv_.
+Pazdera, J. K., Rinaldi, O. M., & Trainor, L. J. (2026). Timing-induced illusory percepts of pitch. _PsyArXiv_.
 
-The project was originally shared as a preprint on PsyArXiv/OSF:
-<https://osf.io/preprints/psyarxiv/caxsb>
+A preprint of the manuscript can be found at the following link, pending its upcoming publication in _Scientific Reports_:
+<https://osf.io/preprints/psyarxiv/caxsb_v3>
 
-If a final published version becomes available, it can be linked here alongside the preprint.
+## Contents
 
-## Repository contents
+**E1/** contains all stimuli, data, and code for Experiment 1.
+**E2/** contains all stimuli, data, and code for Experiment 2.
 
-**E1/** contains the browser-based implementation of Experiment 1, the pre-generated trial schedules, the raw participant exports, and the analysis notebooks/scripts used for the first experiment.
+For each experiment, the repository includes:
 
-**E2/** contains the PsychoPy implementation of Experiment 2, the generated stimuli used for adaptive testing and the main task, the raw participant exports, and the analysis notebooks/scripts used for the second experiment.
+- jsPsych / PsychoPy code and stimuli used to run the study
+- Raw, participant-level CSV data files
+- Processed data tables used for the analyses in the manuscript
+- Jupyter (Python) notebooks for stimulus preparation, preprocessing, and figure generation
+- R scripts for statistical analyses
+- Exported manuscript figures in PDF/SVG format
 
-Across both experiments, the repository includes:
-
-- raw participant-level CSV files
-- processed summary tables used for the manuscript analyses
-- Jupyter notebooks for stimulus preparation, preprocessing, and figure generation
-- R scripts for confirmatory statistical analyses
-- exported manuscript figures in PDF/SVG format
-
-Detailed documentation is provided in:
+Experiment-specific documentation is provided in:
 
 - [E1/README.md](E1/README.md)
 - [E2/README.md](E2/README.md)
 
-## Software overview
-
-The repository combines several toolchains:
-
-- **Experiment 1** was implemented in **jsPsych** for online deployment via **Pavlovia**.
-- **Experiment 2** was implemented in **PsychoPy**.
-- **Stimulus generation and figure notebooks** use Python/Jupyter packages such as `numpy`, `pandas`, `scipy`, `matplotlib`, `seaborn`, `librosa`, and `soundfile`.
-- **Statistical analyses** use R packages including `tidyverse`, `sjstats`, `lme4`, `lmerTest`, and related plotting/modeling packages.
-
-Some analysis scripts contain machine-specific `setwd(...)` paths from the original project environment, so those paths may need to be updated before rerunning the analyses on a new machine.
-
-## Reproducibility notes
-
-- The repository preserves both raw and processed data products.
-- Confirmatory analysis scripts encode the participant exclusions and version filters used for the manuscript.
-- Review-oriented notebooks are retained in `analysis/review/` within each experiment directory.
+Please note that some analysis scripts contain machine-specific file paths from the original project environment (e.g., `setwd(...)`), so those paths may need to be updated before rerunning the analyses on a new machine.
 
 ## License
 
