@@ -31,7 +31,7 @@
 - `scores.csv`: Condition-level sensitivity/bias summaries for each subject.
 - `subj_scores.csv`: Subject-level summary scores used for correlation analyses.
 
-## Analysis files
+### Analysis files
 
 `analysis/` contains the code used for preprocessing, visualization, and statistics:
 
