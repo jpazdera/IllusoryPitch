@@ -2,55 +2,40 @@
 
 ## Summary
 
-`E2/` contains the materials for the second experiment reported in the manuscript. This experiment was run locally in **PsychoPy** and combines an adaptive staircase estimate of pitch discrimination threshold with the main timing-manipulation task.
+`E2/` contains the materials for for Experiment 2, as reported in the manuscript. This experiment was run locally in **PsychoPy** and combines an adaptive staircase estimate of pitch discrimination threshold with the main timing-manipulated, pitch perception task.
 
-The main experiment script defines:
-
-- an interleaved adaptive staircase for estimating each participant's JND
-- `4` main-task blocks
-- fully randomized repetitions of shift direction, timing interval, and difficulty
-- generated participant-specific stimulus sets saved under `stimuli/S*/`
-
-## Directory contents
+## Contents
 
 ### Core experiment file
 
-- `experiment_ip_adaptive.py` contains the PsychoPy task, including staircase calibration, stimulus playback, trial flow, response collection, logging, and data saving.
+- `experiment_ip_adaptive.py` contains the PsychoPy task, including the staircase calibration procedure, dynamic stimulus creation, and the control and logging of the main experiment.
 
-### Stimulus generation
+### Stimuli
 
-- `preparation/Tone Generation (IP-AD).ipynb` contains the notebook used to generate tones/sequences for the adaptive experiment.
-- `stimuli/tones/` contains the base tone library for the staircase and sequence generation.
-- `stimuli/S*/` contains generated sequence sets and `tone_log.json` files for individual subjects or sessions.
+- `preparation/Tone Generation (IP-AD).ipynb` contains the notebook used to generate the base tones for the staircase procedure.
+- `stimuli/tones/` contains the base tone library for the staircase procedure.
+- `stimuli/S*/` contains generated sequence sets and `tone_log.json` files for individual subjects. These are the custom-generated stimuli produced by `experiment_ip_adaptive.py` after the staircase procedure.
 
 ### Data files
 
 `data/` contains both raw exports and processed data products:
 
-- `IPAD_*.csv`: raw participant exports from the PsychoPy task
-- `response_data.csv`: trial-level processed responses
-- `scores.csv`: condition-level summaries used for the primary analyses
-- `fits.csv`: fitted summary parameters including intercepts/slopes for timing-induced bias
-- `exploratory_scores.csv`: additional exploratory summary table used in later analyses
+- `IPAD_*.csv`: Raw participant data output by PsychoPy.
+- `response_data.csv`: Trial-level processed responses used for analyses.
+- `scores.csv`: Condition-level sensitivity/bias summaries for each subject.
+- `fits.csv`: Timing-induced bias data, characterized by the slope and intercept of lines fit across their data in different timing conditions.
+- `exploratory_scores.csv`: Additional exploratory summary table, not used in analyses.
 
-## Analysis files
+### Analysis files
 
 `analysis/` contains preprocessing notebooks, figure notebooks, and confirmatory statistical scripts:
 
-- `Processing (IP-AD).ipynb`: preprocessing from raw exports to analysis-ready tables
-- `Analysis (IP-AD).ipynb`: main figures and descriptive analyses
-- `Cue Integration.ipynb`: supplementary cue-integration analysis
-- `MixedEffectE2.R`: confirmatory statistical analyses for Experiment 2
-- `figures/`: exported PDF/SVG figures
-- `review/`: additional review-stage notebooks
-
-The confirmatory R script filters out subject `21` and restricts some analyses to recordings with `version >= 1.1`, matching the analysis decisions encoded in the repository.
-
-## Running or reusing the experiment
-
-- The PsychoPy task depends on `psychopy`, `numpy`, `librosa`, `soundfile`, and standard Python libraries used by the script.
-- The script writes logs and data files relative to the experiment directory, so it should be run from within `E2/` or with paths adjusted accordingly.
-- For analysis reruns, update any machine-specific working-directory paths before executing the R scripts.
+- `Processing (IP-AD).ipynb`: Preprocesses from raw data to analysis-ready tables. Includes response scoring and calculation of signal detection theory measures, as well as the calculation of timing-induced bias.
+- `Analysis (IP-AD).ipynb`: Contains performance screening and figure generation.
+- `Cue Integration.ipynb`: Contains simulation of the effects of pitch shift size versus noise on bias and sensitivity, as shown in Discussion section.
+- `MixedEffectE2.R`: Contains all statistical analyses. Note that participant 21 is excluded due to failure to perform above chance.
+- `figures/`: Folder containing exported PDF/SVG figures
+- `review/`: Folder containing additional notebooks used by Olive Rinaldi to review each participant's data for outliers
 
 ## Software dependencies
 
