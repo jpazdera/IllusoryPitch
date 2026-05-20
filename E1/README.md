@@ -2,59 +2,44 @@
 
 ## Summary
 
-`E1/` contains the materials for the first experiment reported in the manuscript. This experiment was run online using **jsPsych** with **Pavlovia** integration and tests whether temporal expectancy biases judgments of whether a final probe tone is higher or lower in pitch.
+`E1/` contains the materials for Experiment 1, as reported in the manuscript. This experiment runs online through **Pavlovia** as a **jsPsych** study and tests whether temporal expectancy biases judgments of whether a final probe tone is higher or lower in pitch. (Note that although the experiment is browser-based, we conducted the study in-lab, with participants accessing **Pavlovia** on a lab computer. The browser-based format acted as a fail-safe in case COVID restrictions interrupted in-person research.)
 
-The main task code defines:
-
-- participant IDs from `1` to `300`
-- `4` experimental blocks
-- `60` main trials per block
-- a short practice phase before the main task
-
-## Directory contents
+## Contents
 
 ### Core experiment files
 
-- `index.html` loads the jsPsych experiment in a browser.
-- `experiment.js` contains the experiment timeline, instructions, trial logic, metadata fields, and Pavlovia save/init calls.
+- `index.html` loads the jsPsych experiment in a browser. Note that the code was written to use Pavlovia's built-in library assets, so these are not included with the codebase. 
+- `experiment.js` contains the experiment timeline, instructions, trial logic, metadata fields, and Pavlovia calls.
 
 ### Stimuli and schedules
 
-- `stimuli/` contains the WAV files used in the task.
-- `stimuli/tones/` contains the base tone files used to build the stimulus sequences.
-- `schedules/` contains `session1.json` through `session300.json`, which define pre-generated trial orders for each participant ID.
+- `stimuli/` contains the WAV files of tone sequences used in the task. File naming is of the form: `sequence_[PITCH][PITCH CHANGE]_[INTERONSET INTERVAL]_[PROBE TIMING].wav`. For example, an early pitch decrease in the third octave would be `sequence_A3-_500_-15.wav`.
+- `stimuli/tones/` contains the base, individual tone files used to build the stimulus sequences. Files ending in `-normed.wav` are the versions normalized to be the same loudness on the headphones used in our study; those without this tag are the pre-normalized raw waveforms.
+- `schedules/` contains `session1.json` through `session300.json`, which define pre-generated trial orders for each participant ID (up to 300).
 
 ### Preparation notebooks
 
-- `preparation/Tone_Generation (IP).ipynb` generates the stimulus tones/sequences.
-- `preparation/Trial_Randomization (IP).ipynb` generates the session schedules used by the online experiment.
+- `preparation/Tone_Generation (IP).ipynb` generates the stimulus tones/sequences found in `stimuli/`.
+- `preparation/Trial_Randomization (IP).ipynb` generates the session schedules used by the online experiment, as found in `schedules/`.
 
 ### Data files
 
 `data/` contains both raw exports and processed data products:
 
-- `Illusory_Pitch_PARTICIPANT_SESSION_*.csv`: raw participant files exported from the online study
-- `response_data.csv`: trial-level processed responses used for downstream analyses
-- `scores.csv`: condition-level sensitivity/bias summaries
-- `subj_scores.csv`: subject-level summary scores used for correlational analyses
+- `Illusory_Pitch_PARTICIPANT_SESSION_*.csv`: Raw participant files output by Pavlovia.
+- `response_data.csv`: Trial-level processed responses used for analyses.
+- `scores.csv`: Condition-level sensitivity/bias summaries for each subject.
+- `subj_scores.csv`: Subject-level summary scores used for correlation analyses.
 
 ## Analysis files
 
-`analysis/` contains the code used for preprocessing, visualization, and confirmatory statistics:
+`analysis/` contains the code used for preprocessing, visualization, and statistics:
 
-- `Processing (IP).ipynb`: preprocessing from raw data to analysis-ready tables
-- `Analysis (IP).ipynb`: figure generation and exploratory plotting
-- `Stats (IP).R`: confirmatory statistics reported for Experiment 1
-- `figures/`: exported PDF/SVG figures
-- `review/`: additional notebooks prepared for review-stage sensitivity/bias checks
-
-The R script currently excludes subjects `13`, `15`, `22`, `31`, and `35`, matching the confirmatory analysis decisions encoded in the repository.
-
-## Running or reusing the experiment
-
-- The browser task expects jsPsych 6.1/Pavlovia library assets referenced from `index.html`.
-- Those third-party library files are not included in this repository, so relaunching the task may require restoring the corresponding `lib/` directory from the original experiment environment or from a fresh Pavlovia/jsPsych setup.
-- For analysis reruns, update any machine-specific working-directory paths before executing the R scripts.
+- `Processing (IP).ipynb`: Preprocesses from raw data to analysis-ready tables. Includes response scoring and calculation of signal detection theory measures.
+- `Analysis (IP).ipynb`: Contains performance screening and figure generation.
+- `Stats (IP).R`: Contains all statistics. Currently set to exclude participants 13, 15, 22, 31, and 35 based on their failure to perform above chance identified in `Analysis (IP).ipynb`
+- `figures/`: Folder containing exported PDF/SVG figures
+- `review/`: Folder containing additional notebooks used by Olive Rinaldi to review each participant's data for outliers
 
 ## Software dependencies
 
