@@ -9,7 +9,7 @@ A preprint of the manuscript can be found at the following link, pending its upc
 
 ## Contents
 
-**E1/** contains all stimuli, data, and code for Experiment 1.
+**E1/** contains all stimuli, data, and code for Experiment 1. \
 **E2/** contains all stimuli, data, and code for Experiment 2.
 
 For each experiment, the repository includes:
